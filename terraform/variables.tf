@@ -1,7 +1,7 @@
 variable "application_name" {
   type        = string
   description = "The name of your application"
-  default     = "quicksta-6015-4416"
+  default     = "demo-1295-9151"
 }
 
 variable "terraform_storage_account" {
@@ -19,5 +19,5 @@ variable "environment" {
 variable "location" {
   type        = string
   description = "The Azure region where all resources in this example should be created"
-  default     = "eastus"
+  default     = "westeurope"
 }
