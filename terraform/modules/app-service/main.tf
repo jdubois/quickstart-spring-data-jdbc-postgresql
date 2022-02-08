@@ -28,8 +28,8 @@ resource "azurerm_app_service_plan" "application" {
   }
 
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier = "Standard"
+    size = "S1"
   }
 }
 
