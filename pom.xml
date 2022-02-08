@@ -44,6 +44,7 @@
 		<dependency>
 			<groupId>com.azure.spring</groupId>
 			<artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+			<version>3.13.0</version>
 		</dependency>
 
 		<dependency>
