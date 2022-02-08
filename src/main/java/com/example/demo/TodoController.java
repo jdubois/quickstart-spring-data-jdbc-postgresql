@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/")
 public class TodoController {
@@ -27,7 +29,7 @@ public class TodoController {
     }
 
     @GetMapping("/")
-    public Iterable<Todo> getTodos() {
+    public Iterable<Todo> getTodos(HttpServletRequest request) {
         return todoRepository.findAll();
     }
 }
