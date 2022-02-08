@@ -70,7 +70,7 @@ resource "azurerm_app_service" "application" {
 
     "SPRING_DATASOURCE_URL"      = "jdbc:postgresql://${var.database_url}"
     "AZURE_KEYVAULT_ENABLED"     = true
-    "AZURE_KEYVAULT_URI"         = "https://${var.vault_id}.vault.azure.net/"
+    "AZURE_KEYVAULT_URI"         = var.vault_uri
   }
 }
 
