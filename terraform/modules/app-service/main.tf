@@ -69,8 +69,8 @@ resource "azurerm_app_service" "application" {
     "SPRING_PROFILES_ACTIVE" = "prod,azure"
 
     "SPRING_DATASOURCE_URL"      = "jdbc:postgresql://${var.database_url}"
-    "SPRING_DATASOURCE_USERNAME" = var.database_username
-    "SPRING_DATASOURCE_PASSWORD" = var.database_password
+    "AZURE_KEYVAULT_ENABLED"     = true
+    "AZURE_KEYVAULT_URI"         = "https://${var.vault_id}.vault.azure.net/"
   }
 }
 
