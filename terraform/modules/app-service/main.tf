@@ -28,8 +28,8 @@ resource "azurerm_app_service_plan" "application" {
   }
 
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier = "Standard"
+    size = "S1"
   }
 }
 
@@ -58,6 +58,10 @@ resource "azurerm_app_service" "application" {
     ftps_state       = "FtpsOnly"
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
 
@@ -68,4 +72,22 @@ resource "azurerm_app_service" "application" {
     "SPRING_DATASOURCE_USERNAME" = var.database_username
     "SPRING_DATASOURCE_PASSWORD" = var.database_password
   }
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault_access_policy" "application" {
+  key_vault_id = var.vault_id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_app_service.application.identity[0].principal_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+}
+
+resource "azurerm_app_service_virtual_network_swift_connection" "swift_connection" {
+  app_service_id = azurerm_app_service.application.id
+  subnet_id      = var.subnet_id
 }

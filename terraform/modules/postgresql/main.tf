@@ -32,6 +32,9 @@ resource "azurerm_postgresql_flexible_server" "database" {
   backup_retention_days        = 7
   version                      = "13"
   geo_redundant_backup_enabled = false
+  delegated_subnet_id          = var.subnet_id
+  private_dns_zone_id          = azurerm_private_dns_zone.database.id
+  depends_on                   = [azurerm_private_dns_zone_virtual_network_link.database]
 
   tags = {
     "environment"      = var.environment
@@ -56,16 +59,20 @@ resource "azurerm_postgresql_flexible_server_database" "database" {
   collation           = "en_US.utf8"
 }
 
-resource "azurecaf_name" "postgresql_firewall_rule" {
+resource "azurerm_private_dns_zone" "database" {
+  name                = "db1.private.postgres.database.azure.com"
+  resource_group_name = var.resource_group
+}
+
+resource "azurecaf_name" "private_dns_zone_virtual_network_link" {
   name          = var.application_name
-  resource_type = "azurerm_postgresql_flexible_server_firewall_rule"
+  resource_type = "azurerm_private_dns_zone_virtual_network_link"
   suffixes      = [var.environment]
 }
 
-# This rule is to enable the 'Allow access to Azure services' checkbox
-resource "azurerm_postgresql_flexible_server_firewall_rule" "database" {
-  name                = azurecaf_name.postgresql_firewall_rule.result
-  server_id           = azurerm_postgresql_flexible_server.database.id
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
+resource "azurerm_private_dns_zone_virtual_network_link" "database" {
+  name                  = azurecaf_name.private_dns_zone_virtual_network_link.result
+  resource_group_name   = var.resource_group
+  private_dns_zone_name = azurerm_private_dns_zone.database.name
+  virtual_network_id    = var.virtual_network_id
 }

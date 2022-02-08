@@ -33,3 +33,13 @@ variable "database_password" {
   type        = string
   description = "The database password"
 }
+
+variable "vault_id" {
+  type        = string
+  description = "The Azure Key Vault ID"
+}
+
+variable "subnet_id" {
+  type        = string
+  description = "The subnet the app can use"
+}
