@@ -26,10 +26,9 @@ resource "azurerm_key_vault" "application" {
   sku_name = "standard"
 
   network_acls {
-    default_action             = "Deny"
+    default_action             = "Allow"
     bypass                     = "None"
     virtual_network_subnet_ids = [var.subnet_id]
-    ip_rules                   = [var.myip]
   }
 
   tags = {
@@ -56,7 +55,7 @@ resource "azurerm_key_vault_secret" "database_username" {
   value        = var.database_username
   key_vault_id = azurerm_key_vault.application.id
 
-  depends_on = [ azurerm_key_vault_access_policy.client, azurerm_key_vault.application ]
+  depends_on = [ azurerm_key_vault_access_policy.client ]
 }
 
 resource "azurerm_key_vault_secret" "database_password" {
@@ -64,5 +63,5 @@ resource "azurerm_key_vault_secret" "database_password" {
   value        = var.database_password
   key_vault_id = azurerm_key_vault.application.id
 
-  depends_on = [ azurerm_key_vault_access_policy.client, azurerm_key_vault.application ]
+  depends_on = [ azurerm_key_vault_access_policy.client ]
 }
