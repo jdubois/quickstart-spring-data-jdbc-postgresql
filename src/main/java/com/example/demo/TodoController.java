@@ -22,7 +22,7 @@ public class TodoController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public Todo createTodo(@RequestBody Todo todo) {
-        logger.debug(todo);
+        logger.warn(todo);
         return todoRepository.save(todo);
     }
 
